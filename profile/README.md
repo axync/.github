@@ -2,64 +2,56 @@
 
 # Axync
 
-**Proof, not promises.**
+**Trade locked tokens. Cross-chain. Trustless.**
 
-Cross-chain settlement verified by zero-knowledge proofs.
+The marketplace for vesting positions, locked tokens, and OTC deals — settled with zero-knowledge proofs.
 
 ---
 
-`Deposit` · `Trade` · `Settle` · `Withdraw`
+[App](https://app.axync.xyz) · [Docs](https://axync.gitbook.io/axync-docs) · [Twitter](https://x.com/axaboratory)
 
 </div>
 
-## What is Axync?
+## The Problem
 
-Axync is a cross-chain settlement protocol that lets you move value across blockchains without traditional bridges. Every settlement is verified by ZK proofs — no trusted intermediaries, no multisigs, no waiting for finality on multiple chains.
+Billions of dollars sit locked in vesting contracts (Sablier, Hedgey, custom schedules). Token holders who need liquidity today have two options: wait months, or sell OTC on Telegram with zero guarantees.
 
-> Deposit on one chain. Trade at any rate. Settle on another. Withdraw with a proof.
+## The Solution
 
-## How it works
+Axync is a cross-chain escrow marketplace where sellers list locked tokens or NFTs and buyers purchase them at a discount. Settlement happens through a ZK sequencer — atomic, verifiable, no trusted intermediaries.
 
-```
- Chain A                    Axync                    Chain B
-┌──────────┐          ┌──────────────┐          ┌──────────┐
-│          │ deposit  │              │ withdraw │          │
-│ Ethereum ├─────────►│  Sequencer   ├─────────►│   Base   │
-│          │          │  ┌────────┐  │          │          │
-│          │          │  │ZK Proof│  │          │          │
-│          │◄─────────┤  └────────┘  │◄─────────┤          │
-│          │ withdraw │              │ deposit  │          │
-└──────────┘          └──────────────┘          └──────────┘
-```
+**Sell on Ethereum. Get paid on Base. One click.**
 
-1. **Deposit** — Lock assets on any supported chain
-2. **Create Deal** — Set your terms: amount, rate, chains
-3. **Accept Deal** — Counterparty fills your deal
-4. **Settle** — Sequencer executes the atomic swap
-5. **Withdraw** — Claim on the destination chain with a ZK proof
+### How a deal works
+
+1. **Seller lists** — Deposit any ERC-20 token or ERC-721 NFT into the on-chain escrow, set a price and payment chain
+2. **Buyer pays** — Deposit payment on any supported chain via AxyncVault
+3. **Sequencer settles** — Matches payment to listing, produces a ZK proof of the state transition
+4. **Buyer claims** — Withdraw the asset on the seller's chain using the merkle proof
+
+Cross-chain settlement is handled entirely by the protocol. No bridges, no wrapped tokens, no counterparty risk.
 
 ## Architecture
 
-| Component | Stack | Description |
+| Repository | Stack | What it does |
 |-----------|-------|-------------|
-| **[core](https://github.com/axync/core)** | Rust | Sequencer, state machine, ZK proof generation, block production |
-| **[ui](https://github.com/axync/ui)** | Next.js | Trading interface with EIP-712 wallet signing |
-| **[contracts](https://github.com/axync/contracts)** | Solidity | Deposit, withdrawal & verifier contracts (Groth16) |
+| **[core](https://github.com/axync/core)** | Rust | Sequencer, state machine, ZK prover, chain watchers, API |
+| **[contracts](https://github.com/axync/contracts)** | Solidity | AxyncEscrow, AxyncVault, AxyncVerifier (Groth16) |
+| **[ui](https://github.com/axync/ui)** | Next.js | Marketplace interface with wallet integration |
+| **[relayer](https://github.com/axync/relayer)** | Node.js | Submits block proofs and state roots on-chain |
 
-## Supported Chains
+## Supported Assets & Chains
 
-| Chain | Status |
-|-------|--------|
-| Ethereum | Testnet |
-| Base | Testnet |
+**Assets:** Any ERC-20 token, any ERC-721 NFT — including vesting positions from Sablier, Hedgey, and custom contracts.
 
+**Chains:** Ethereum and Base (Sepolia testnet). Mainnet and additional L2s coming soon.
 
-## Key Design Decisions
+## What makes Axync different
 
-- **No bridge tokens** — native assets only, no wrapped representations
-- **EIP-712 typed signing** — human-readable transaction approval in wallets
-- **STARK → SNARK composition** — fast proving with on-chain verification efficiency
-- **Sequencer with ZK validity proofs** — trustless state transitions, anyone can verify
+- **Cross-chain native** — Asset on Ethereum, payment on Base. No bridges needed.
+- **Any token** — Not limited to specific vesting protocols. List any ERC-20 or ERC-721.
+- **ZK settlement** — Every state transition is provable. No trusted sequencer assumptions.
+- **Permissionless** — No KYC, no minimum amounts, no approval from token issuers.
 
 <div align="center">
 
@@ -67,7 +59,7 @@ Axync is a cross-chain settlement protocol that lets you move value across block
 
 <sub>
 
-[app.axync.xyz](https://app.axync.xyz)
+[app.axync.xyz](https://app.axync.xyz) · Built with Rust, Solidity, and zero-knowledge proofs
 
 </sub>
 
