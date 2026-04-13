@@ -8,7 +8,7 @@ A universal peer-to-peer marketplace for tokens and NFTs — settled with zero-k
 
 ---
 
-[App](https://app.axync.xyz) · [Docs](https://axync.gitbook.io/axync-docs) · [Twitter](https://x.com/axaboratory)
+[App](https://app.axync.xyz) · [Docs](https://axync.gitbook.io/axync-docs) · [Twitter](https://x.com/axync_xyz)
 
 </div>
 
